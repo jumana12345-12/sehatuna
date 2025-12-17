@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ويدجت صحتنا - آيفون</title>
+    
+    <!-- استيراد Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- إعداد Tailwind لدعم الوضع الداكن -->
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        ibm: ['IBM Plex Sans Arabic', 'sans-serif'],
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.5s ease-out',
+                        'slide-up': 'slideUp 0.5s ease-out',
+                        'zoom-in': 'zoomIn 0.3s ease-out',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        },
+                        slideUp: {
+                            '0%': { transform: 'translateY(20px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' },
+                        },
+                        zoomIn: {
+                            '0%': { transform: 'scale(0.95)', opacity: '0' },
+                            '100%': { transform: 'scale(1)', opacity: '1' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- استيراد خطوط -->
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- استيراد Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        /* إخفاء شريط التمرير */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 0px;
+            background: transparent;
+        }
+        .custom-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        
+        body {
+            font-family: 'IBM Plex Sans Arabic', sans-serif;
+        }
+        
+        /* منع تحديد النص أثناء السحب */
+        .no-select {
+            user-select: none;
+            -webkit-user-select: none;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 transition-colors duration-300 min-h-screen flex flex-col items-center justify-center p-6" id="main-body">
+
+    <!-- الرأس: العنوان وزر التبديل -->
+    <div class="w-full max-w-md flex justify-between items-center mb-8">
+        <div>
+            <h1 class="text-2xl font-bold text-gray-800 dark:text-white transition-colors">ويدجت "سند" - iOS</h1>
+            <p class="text-sm text-gray-500 dark:text-gray-400 transition-colors">نظام Smart Stack (مواعيد + أدوية)</p>
+        </div>
+        <button onclick="toggleDarkMode()" class="p-3 rounded-full bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 shadow-lg hover:shadow-xl transition-all duration-300 active:scale-90">
+            <span id="dark-mode-icon">🌙</span>
+        </button>
+    </div>
+
+    <!-- إطار الآيفون (iPhone Style) -->
+    <div class="relative w-[375px] h-[780px] rounded-[55px] shadow-2xl bg-black border-[12px] border-black p-1 overflow-hidden flex flex-col items-center justify-start transition-all duration-500 transform scale-95 md:scale-100 ring-4 ring-gray-300 dark:ring-gray-800 transition-colors">
+        
+        <!-- الشاشة الداخلية -->
+        <div class="w-full h-full rounded-[45px] overflow-y-auto custom-scrollbar relative bg-gray-100 dark:bg-gray-900 transition-colors">
+            
+            <!-- الخلفية (تدرجات رمادية) -->
+            <div class="absolute inset-0 bg-gradient-to-b from-gray-300 via-gray-100 to-gray-50 opacity-100 transition-opacity"></div>
+            <!-- طبقة تظليل الوضع الداكن -->
+            <div class="absolute inset-0 bg-black/10 dark:bg-black/20 pointer-events-none transition-colors"></div>
+
+            <!-- Dynamic Island -->
+            <div class="absolute top-2 left-1/2 -translate-x-1/2 w-[120px] h-[35px] bg-black rounded-full z-20 shadow-sm flex items-center justify-center">
+                <div class="w-2 h-2 rounded-full bg-gray-800/50 absolute right-4"></div>
+            </div>
+
+            <!-- المحتوى -->
+            <div class="relative z-10 px-5 pt-14 pb-2 space-y-6 h-full flex flex-col font-ibm">
+                
+                <!-- شريط الحالة (Status Bar - iOS Style) -->
+                <div class="flex justify-between items-center text-xs text-gray-700 dark:text-gray-800 mb-4 font-semibold px-2 tracking-wide opacity-90 transition-colors">
+                    <span>10:51</span>
+                    <div class="flex items-center space-x-1.5 space-x-reverse">
+                        <i data-lucide="wifi" class="w-3 h-3"></i>
+                        <span>5G</span>
+                        
+                        <!-- البطارية (iOS Style) -->
+                        <div class="w-[22px] h-[11px] relative ml-1">
+                            <!-- جسم البطارية -->
+                            <div class="absolute inset-0 border-[1.5px] border-gray-900 dark:border-white rounded-[3px] p-[1.5px] flex items-center justify-start transition-colors">
+                                <!-- نسبة الشحن -->
+                                <div class="w-[60%] h-full bg-gray-900 dark:bg-white rounded-[1px] transition-colors"></div>
+                            </div>
+                            <!-- رأس البطارية -->
+                            <div class="absolute top-1/2 -left-[2px] -translate-y-1/2 w-[1.5px] h-[4px] bg-gray-900 dark:bg-white rounded-l-[1px] transition-colors"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- الويدجت الذكي (Smart Stack) -->
+                <div class="flex flex-col items-center space-y-2 mb-8 transform transition-all duration-300 hover:scale-[1.02]">
+                    <div id="widget-container" class="relative bg-white dark:bg-gray-800 w-full h-[180px] rounded-[22px] shadow-xl transition-all duration-300 overflow-hidden border border-gray-100 dark:border-gray-700 group cursor-grab active:cursor-grabbing no-select">
+                        
+                        <!-- مناطق التنقل الجانبية (للنقر أيضاً) -->
+                        <div onclick="prevWidget()" class="absolute right-0 top-0 w-[15%] h-full z-10 cursor-pointer hover:bg-black/5 transition-colors" title="السابق"></div>
+                        <div onclick="nextWidget()" class="absolute left-0 top-0 w-[15%] h-full z-10 cursor-pointer hover:bg-black/5 transition-colors" title="التالي"></div>
+
+                        <!-- حاوية محتوى الويدجت -->
+                        <div id="widget-content" class="p-4 h-full relative z-0">
+                            <!-- سيتم حقن المحتوى هنا بواسطة JavaScript -->
+                        </div>
+                    </div>
+                    
+                    <!-- تسمية الويدجت (تتغير ديناميكياً) -->
+                    <span id="widget-label" class="text-xs text-gray-500 dark:text-gray-400 font-medium transition-opacity duration-300">
+                        صحتنا - قسم المواعيد
+                    </span>
+                </div>
+
+                <!-- شبكة التطبيقات -->
+                <div class="grid grid-cols-4 gap-x-5 gap-y-7 px-1">
+                    <!-- تطبيق صحتنا -->
+                    <div class="flex flex-col items-center space-y-1.5">
+                        <div class="w-[60px] h-[60px] bg-emerald-500/30 backdrop-blur-md border border-white/20 rounded-[14px] shadow-sm flex items-center justify-center cursor-pointer hover:scale-105 transition-transform">
+                            <!-- أيقونة النبض -->
+                            <i data-lucide="heart-pulse" class="w-8 h-8 text-emerald-800 dark:text-emerald-100 opacity-90"></i>
+                        </div>
+                        <span class="text-[11px] text-gray-700 dark:text-white dark:font-semibold font-medium drop-shadow-md transition-colors">صحتنا</span>
+                    </div>
+
+                    <!-- تطبيقات وهمية -->
+                    <div class="contents" id="app-grid">
+                        <!-- سيتم تكرار التطبيقات هنا -->
+                    </div>
+                </div>
+
+                <!-- الدوك (Dock) -->
+                <div class="mt-auto">
+                    <div class="w-full bg-white/40 backdrop-blur-xl rounded-[35px] p-4 flex justify-between items-center px-6 shadow-sm border border-white/10">
+                        <div class="w-[55px] h-[55px] bg-gradient-to-b from-green-400 to-green-600 rounded-[14px] shadow-sm flex items-center justify-center">
+                            <i data-lucide="phone" class="w-7 h-7 text-white"></i>
+                        </div>
+                        <div class="w-[55px] h-[55px] bg-gradient-to-b from-blue-400 to-blue-600 rounded-[14px] shadow-sm flex items-center justify-center">
+                            <i data-lucide="mail" class="w-7 h-7 text-white"></i>
+                        </div>
+                        <div class="w-[55px] h-[55px] bg-gradient-to-b from-gray-200 to-gray-400 rounded-[14px] shadow-sm flex items-center justify-center">
+                            <i data-lucide="globe" class="w-7 h-7 text-gray-700"></i>
+                        </div>
+                        <div class="w-[55px] h-[55px] bg-gradient-to-b from-orange-400 to-orange-600 rounded-[14px] shadow-sm flex items-center justify-center">
+                            <i data-lucide="music" class="w-7 h-7 text-white"></i>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Home Indicator -->
+            <div class="absolute bottom-2 left-1/2 -translate-x-1/2 w-[130px] h-[5px] bg-gray-800 dark:bg-white rounded-full opacity-30 z-20"></div>
+        </div>
+
+        <!-- الأزرار الجانبية الفيزيائية للآيفون -->
+        <div class="absolute left-[-14px] top-[150px] w-[6px] h-[40px] bg-gray-700 rounded-l-lg shadow-sm"></div>
+        <div class="absolute left-[-14px] top-[210px] w-[6px] h-[65px] bg-gray-700 rounded-l-lg shadow-sm"></div>
+        <div class="absolute left-[-14px] top-[285px] w-[6px] h-[65px] bg-gray-700 rounded-l-lg shadow-sm"></div>
+        <div class="absolute right-[-14px] top-[220px] w-[6px] h-[90px] bg-gray-700 rounded-r-lg shadow-sm"></div>
+    </div>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // البيانات الوهمية
+        const widgetsData = [
+            {
+                type: 'appointments',
+                id: 1,
+                emotionalMessage: 'سارة، والدتك تحتاجك تكوني لها سند 🤍',
+                title: 'موعد الوالدة: عيادة القلب',
+                description: 'موعد والدتك غداً مع د. هدى العلي',
+                subDetail: 'مستشفى الملك فيصل التخصصي',
+                subDetailIcon: 'map-pin',
+                cta: 'أنا لها (مساندة)',
+                timeDisplay: '04:15',
+                icon: 'calendar',
+                colorClass: 'emerald'
+            },
+            {
+                type: 'medications',
+                id: 2,
+                emotionalMessage: 'جرعتك الآن خطوة لصحة أقوى 🤍',
+                title: 'أدويتك اليوم',
+                description: 'التالي: فيتامين D - حبة واحدة',
+                subDetail: 'بعد: 45 دقيقة',
+                subDetailIcon: 'timer',
+                cta: 'تم أخذها',
+                timeDisplay: '06:30',
+                icon: 'pill',
+                colorClass: 'emerald'
+            }
+        ];
+
+        let state = {
+            darkMode: false,
+            activeIndex: 0,
+            confirmedStates: {} 
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                state.darkMode = true;
+            }
+            renderApp();
+            renderAppGrid();
+            initSwipe(); // تهيئة السحب
+        });
+
+        // -------------------------
+        // منطق السحب (Swipe Logic)
+        // -------------------------
+        function initSwipe() {
+            const container = document.getElementById('widget-container');
+            let startX = 0;
+            let endX = 0;
+
+            // للموبايل (Touch)
+            container.addEventListener('touchstart', (e) => {
+                startX = e.changedTouches[0].screenX;
+            }, {passive: true});
+
+            container.addEventListener('touchend', (e) => {
+                endX = e.changedTouches[0].screenX;
+                handleGesture();
+            }, {passive: true});
+
+            // للماوس (Desktop)
+            container.addEventListener('mousedown', (e) => {
+                startX = e.screenX;
+            });
+
+            container.addEventListener('mouseup', (e) => {
+                endX = e.screenX;
+                handleGesture();
+            });
+
+            function handleGesture() {
+                const threshold = 50; // الحد الأدنى للمسافة لاعتبارها سحبة
+                
+                // سحب لليسار (التالي)
+                if (startX - endX > threshold) {
+                    nextWidget();
+                }
+                
+                // سحب لليمين (السابق)
+                if (endX - startX > threshold) {
+                    prevWidget();
+                }
+            }
+        }
+
+        function toggleDarkMode() {
+            state.darkMode = !state.darkMode;
+            renderApp();
+        }
+
+        function renderApp() {
+            const html = document.documentElement;
+            const icon = document.getElementById('dark-mode-icon');
+            
+            if (state.darkMode) {
+                html.classList.add('dark');
+                icon.textContent = '☀️';
+                document.getElementById('main-body').classList.remove('bg-gray-100');
+                document.getElementById('main-body').classList.add('bg-gray-900');
+            } else {
+                html.classList.remove('dark');
+                icon.textContent = '🌙';
+                document.getElementById('main-body').classList.add('bg-gray-100');
+                document.getElementById('main-body').classList.remove('bg-gray-900');
+            }
+            renderWidget();
+        }
+
+        function nextWidget() {
+            state.activeIndex = (state.activeIndex + 1) % widgetsData.length;
+            renderWidget();
+        }
+
+        function prevWidget() {
+            state.activeIndex = (state.activeIndex - 1 + widgetsData.length) % widgetsData.length;
+            renderWidget();
+        }
+
+        function handleConfirm(event, id, type) {
+            event.stopPropagation();
+            state.confirmedStates[id] = 'confirmed';
+            renderWidget();
+        }
+
+        function handleUndo(event, id) {
+            event.stopPropagation();
+            delete state.confirmedStates[id];
+            renderWidget();
+        }
+
+        function handleSkip(event, id) {
+            event.stopPropagation();
+            state.confirmedStates[id] = 'skipped';
+            renderWidget();
+        }
+
+        function renderWidget() {
+            const container = document.getElementById('widget-content');
+            const label = document.getElementById('widget-label');
+            
+            const widget = widgetsData[state.activeIndex];
+            const status = state.confirmedStates[widget.id];
+
+            // تحديث التسمية ديناميكياً بناءً على نوع الويدجت
+            if (widget.type === 'appointments') {
+                label.textContent = 'صحتنا - قسم المواعيد';
+            } else {
+                label.textContent = 'صحتنا - قسم الأدوية';
+            }
+
+            let contentHtml = '';
+
+            if (status && widget.type === 'medications') {
+                const isSkipped = status === 'skipped';
+                contentHtml = `
+                    <div class="h-full flex flex-col items-center justify-center text-center space-y-3 animate-zoom-in font-ibm">
+                        <div class="${isSkipped ? 'bg-red-100 dark:bg-red-900/50' : 'bg-emerald-100 dark:bg-emerald-800/50'} p-3 rounded-full">
+                            <i data-lucide="${isSkipped ? 'alert-circle' : 'check'}" class="w-8 h-8 ${isSkipped ? 'text-red-600 dark:text-red-400' : 'text-emerald-600 dark:text-emerald-400'}"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-bold text-gray-900 dark:text-white">
+                                ${isSkipped ? 'تم تخطي الجرعة' : 'تم أخذ الجرعة'}
+                            </h3>
+                            <p class="text-xs text-gray-600 dark:text-gray-300 mt-1 font-medium">
+                                ${isSkipped ? 'احرص على الالتزام بموعدك القادم 🤍' : 'صحة وعافية 🤍'}
+                            </p>
+                        </div>
+                    </div>
+                `;
+            } else {
+                let displayMessage = widget.emotionalMessage;
+                let emotionalMessageColor = 'text-gray-600 dark:text-gray-300 font-semibold';
+                let actionButtons = '';
+
+                if (widget.type === 'appointments') {
+                    if (status === 'confirmed') {
+                        displayMessage = 'أنتِ الآن سند لوالدتك، الله يكتب أجرك 🤍';
+                        actionButtons = `
+                        <button onclick="handleUndo(event, ${widget.id})" class="w-full bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-500 dark:text-gray-300 font-bold py-2.5 px-4 rounded-xl shadow-sm transition-transform active:scale-95 flex items-center justify-center text-sm relative z-20 border border-gray-200 dark:border-gray-600">
+                            تراجع
+                        </button>
+                        `;
+                    } else {
+                        actionButtons = `
+                        <button onclick="handleConfirm(event, ${widget.id}, '${widget.type}')" class="w-full bg-emerald-600 hover:bg-emerald-700 dark:bg-emerald-600 dark:hover:bg-emerald-500 text-white font-bold py-2.5 px-4 rounded-xl shadow-md transition-transform active:scale-95 flex items-center justify-center text-sm relative z-20">
+                            ${widget.cta}
+                        </button>
+                        `;
+                    }
+                } else {
+                    actionButtons = `
+                    <div class="flex gap-2">
+                        <button onclick="handleConfirm(event, ${widget.id}, '${widget.type}')" class="flex-1 bg-emerald-600 hover:bg-emerald-700 dark:bg-emerald-600 dark:hover:bg-emerald-500 text-white font-bold py-2.5 px-4 rounded-xl shadow-md transition-transform active:scale-95 flex items-center justify-center text-sm relative z-20">
+                            ${widget.cta}
+                        </button>
+                        <button onclick="handleSkip(event, ${widget.id})" class="flex-none w-[30%] bg-red-100 hover:bg-red-200 dark:bg-red-900/30 dark:hover:bg-red-900/50 text-red-800 dark:text-red-100 font-bold py-2.5 px-2 rounded-xl shadow-sm transition-transform active:scale-95 flex items-center justify-center text-sm relative z-20 border border-red-200 dark:border-red-800">
+                            تخطي
+                        </button>
+                    </div>
+                    `;
+                }
+
+                contentHtml = `
+                    <div class="h-full flex flex-col justify-between font-ibm relative animate-slide-up">
+                        <div>
+                            <div class="flex justify-between items-start mb-2">
+                                <div class="flex items-center space-x-2 space-x-reverse">
+                                    <div class="bg-emerald-100 dark:bg-emerald-900/40 p-1.5 rounded-2xl">
+                                        <i data-lucide="${widget.icon}" class="w-4 h-4 text-emerald-600 dark:text-emerald-400"></i>
+                                    </div>
+                                    <h2 class="text-base font-extrabold text-gray-900 dark:text-white leading-tight">
+                                        ${widget.title}
+                                    </h2>
+                                </div>
+                                <span class="text-emerald-700 dark:text-emerald-400 font-ibm text-sm font-bold tracking-widest">
+                                    ${widget.timeDisplay}
+                                </span>
+                            </div>
+
+                            <div class="mr-8 space-y-1">
+                                <p class="text-sm text-gray-800 dark:text-gray-100 leading-snug font-bold">
+                                    ${widget.description}
+                                </p>
+                                <div class="flex items-center text-xs text-gray-600 dark:text-gray-300 font-semibold">
+                                    <i data-lucide="${widget.subDetailIcon}" class="w-3.5 h-3.5 ml-1 text-gray-500 dark:text-gray-400"></i>
+                                    ${widget.subDetail}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-auto">
+                            <p class="text-[11px] text-center ${emotionalMessageColor} mb-2 transition-all duration-300">
+                                ${displayMessage}
+                            </p>
+                            ${actionButtons}
+                        </div>
+                    </div>
+                `;
+            }
+
+            container.innerHTML = contentHtml;
+            lucide.createIcons();
+        }
+
+        // توليد شبكة التطبيقات (بتصميم iOS: حواف دائرية rounded-14px)
+        function renderAppGrid() {
+            const grid = document.getElementById('app-grid');
+            
+            // تم إعادة ترتيب التطبيقات وتغيير الألوان لتجنب اللون الأخضر بجانب "صحتنا"
+            const saudiApps = [
+                { name: 'الراجحي', icon: 'landmark', color: 'bg-blue-700', text: 'text-white' }, // أزرق
+                { name: 'stc pay', icon: 'wallet', color: 'bg-purple-600', text: 'text-white' }, // بنفسجي
+                { name: 'نون', icon: 'shopping-bag', color: 'bg-yellow-400', text: 'text-black' }, // أصفر
+                { name: 'أبشر', icon: 'check-circle-2', color: 'bg-green-600', text: 'text-white' },
+                { name: 'توكلنا', icon: 'shield-check', color: 'bg-teal-700', text: 'text-white' },
+                { name: 'نفاذ', icon: 'fingerprint', color: 'bg-green-500', text: 'text-white' },
+                { name: 'جاهز', icon: 'utensils', color: 'bg-red-500', text: 'text-white' },
+                { name: 'حراج', icon: 'tag', color: 'bg-blue-500', text: 'text-white' },
+                { name: 'سناب', icon: 'ghost', color: 'bg-yellow-300', text: 'text-white shadow-sm' }, 
+                { name: 'واتساب', icon: 'message-circle', color: 'bg-green-500', text: 'text-white' },
+                { name: 'تويتر', icon: 'twitter', color: 'bg-black', text: 'text-white' },
+            ];
+
+            let html = '';
+            for(let i = 0; i < saudiApps.length; i++) {
+                const app = saudiApps[i];
+                // تم تعديل rounded-full إلى rounded-[14px] لتناسب شكل iOS
+                html += `
+                    <div class="flex flex-col items-center space-y-1 animate-fade-in" style="animation-delay: ${i * 50}ms">
+                        <div class="w-[60px] h-[60px] ${app.color} backdrop-blur-md rounded-[14px] shadow-sm flex items-center justify-center transition-transform hover:scale-105 cursor-pointer">
+                             <i data-lucide="${app.icon}" class="w-7 h-7 ${app.text}"></i>
+                        </div>
+                        <span class="text-[11px] text-gray-700 dark:text-white dark:font-semibold font-medium drop-shadow-sm transition-colors text-center truncate w-[64px]">${app.name}</span>
+                    </div>
+                `;
+            }
+            grid.innerHTML = html;
+            lucide.createIcons();
+        }
+
+    </script>
+</body>
+</html>
